@@ -10,7 +10,7 @@ class AutomataParser:
         automata = {
             'states': set(),
             'alphabet': set(),
-            'start': '',
+            'initial': '',
             'final': set(),
             'transitions': {}
         }
@@ -21,12 +21,20 @@ class AutomataParser:
                 key, value = [s.strip() for s in line.split(':', 1)]
                 section = key
                 if key in {'states', 'alphabet', 'final'}:
-                    automata[key] = {v.strip() for v in value.split(',') if v.strip()}
-                elif key == 'start':
-                    automata['start'] = value.strip()
+                    values = [v.strip() for v in value.split(',')]
+                    #Caso especial, final vacio
+                    if key == 'final' and value.strip() == "":
+                        automata[key] = set()
+                        continue
+                    #Chequeo sintáctico
+                    if not values or any(token == '' for token in values):
+                        raise Exception(f"[Parser] Error en la sección '{key}': elemento vacío o mal formado.")
+                    automata[key] = set(values)
+                elif key == 'initial':
+                    automata['initial'] = value.strip()
             elif section == 'transitions':
                 left, right = [s.strip() for s in line.split('->')]
                 left = left.strip('()')
                 state, symbol = [s.strip() for s in left.split(',')]
                 automata['transitions'][(state, symbol)] = right
-        return Automata(automata['states'], automata['alphabet'], automata['start'], automata['final'], automata['transitions'])
+        return Automata(automata['states'], automata['alphabet'], automata['initial'], automata['final'], automata['transitions'])
