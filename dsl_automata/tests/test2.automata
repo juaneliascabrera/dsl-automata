@@ -1,0 +1,6 @@
+states: q0, q0
+alphabet: a
+start: q0
+final:
+
+transitions:
