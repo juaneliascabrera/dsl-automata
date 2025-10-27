@@ -16,7 +16,7 @@ class AutomataParser:
         }
         section = None
         for line in lines:
-        #Primero procesamos el states
+        #Primero
             if ':' in line:
                 key, value = [s.strip() for s in line.split(':', 1)]
                 section = key

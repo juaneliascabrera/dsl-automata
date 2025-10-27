@@ -8,3 +8,5 @@ transitions:
     (q3, c) -> q3
     (q0, b) -> q4
     (q2, 1) -> q5
+    
+

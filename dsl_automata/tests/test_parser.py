@@ -1,9 +1,11 @@
 from dsl_automata.parser.parser import AutomataParser
+from dsl_automata.logic.errors import *
+from dsl_automata.logic.exceptions import AutomataError
 import os
 import pytest
 def test_parser_basico():
     current_dir = os.path.dirname(__file__)
-    automata_file = os.path.join(current_dir, "test.automata")
+    automata_file = os.path.join(current_dir, "automata_files/test.automata")
 
     parser = AutomataParser()
     automata = parser.parse(automata_file)
@@ -18,8 +20,7 @@ def test_parser_basico():
     }
 def test_parser_basico2():
     current_dir = os.path.dirname(__file__)
-    automata_file = os.path.join(current_dir, "test2.automata")
-
+    automata_file = os.path.join(current_dir, "automata_files/test2.automata")
     parser = AutomataParser()
     automata = parser.parse(automata_file)
     assert automata._states == {"q0"}
@@ -29,19 +30,18 @@ def test_parser_basico2():
     assert automata._transitions == {}
 
 def test_parser_weirdautomata():
-    def test_parser_states_invalid():
-        # Archivo con estado vacío
-        current_dir = os.path.dirname(__file__)
-        automata_file = os.path.join(current_dir, "ejemplo_estado_invalido.automata")
+    # Archivo con estado vacío
+    current_dir = os.path.dirname(__file__)
+    automata_file = os.path.join(current_dir, "automata_files/invalid.automata")
 
-        parser = AutomataParser()
+    parser = AutomataParser()
 
-        # Verificamos que parse() lance la excepción
-        with pytest.raises(Exception):
-            parser.parse(automata_file)
+    # Verificamos que parse() lance la excepción
+    with pytest.raises(Exception):
+        parser.parse(automata_file)
 def test_parser_complejo():
     current_dir = os.path.dirname(__file__)
-    automata_file = os.path.join(current_dir, "complejo.automata")
+    automata_file = os.path.join(current_dir, "automata_files/complejo.automata")
 
     parser = AutomataParser()
     automata = parser.parse(automata_file)
@@ -56,4 +56,46 @@ def test_parser_complejo():
         ("q0", "b"): "q4",
         ("q2", "1"): "q5"
     }
+def test_parser_invalid_automata():
+    current_dir = os.path.dirname(__file__)
+    automata_file = os.path.join(current_dir, "automata_files/invalid2.automata")
+    parser = AutomataParser()
+    #This example has an initial q2 that is not in the states set.
+    with pytest.raises(AutomataError) as excinfo:
+        parser.parse(automata_file)
+    assert str(excinfo.value) == ERROR_INITIAL_NOT_IN_STATES.format(state="q2")
+def test_parser_invalid_automata2():
+    current_dir = os.path.dirname(__file__)
+    automata_file = os.path.join(current_dir, "automata_files/invalid3.automata")
+    parser = AutomataParser()
+    #This example has a final q3 that is not in the states set.
+    with pytest.raises(Exception) as excinfo:
+        parser.parse(automata_file)
+    assert str(excinfo.value) == ERROR_FINAL_NOT_IN_STATES.format(state="q3")
 
+def test_parser_invalid_automata3():
+    current_dir = os.path.dirname(__file__)
+    automata_file = os.path.join(current_dir, "automata_files/invalidtransition.automata")
+    parser = AutomataParser()
+    #This example has a state q2 in a transition that is not in the states set.
+    with pytest.raises(Exception) as excinfo:
+        parser.parse(automata_file)
+    assert str(excinfo.value) == ERROR_UNKNOWN_TRANSITION_TARGET.format(target="q2")
+
+def test_parser_invalid_automata4():
+    current_dir = os.path.dirname(__file__)
+    automata_file = os.path.join(current_dir, "automata_files/invalidtransition2.automata")
+    parser = AutomataParser()
+    #This example has a state q2 in a transition that is not in the states set.
+    with pytest.raises(Exception) as excinfo:
+        parser.parse(automata_file)
+    assert str(excinfo.value) == ERROR_UNKNOWN_TRANSITION_STATE.format(state="q2")
+
+def test_parser_invalid_automata5():
+    current_dir = os.path.dirname(__file__)
+    automata_file = os.path.join(current_dir, "automata_files/invalidtransition3.automata")
+    parser = AutomataParser()
+    #This example has a transition with an character that is not in the alphabet set.
+    with pytest.raises(Exception) as excinfo:
+        parser.parse(automata_file)
+    assert str(excinfo.value) == ERROR_SYMBOL_NOT_IN_ALPHABET.format(symbol="c")

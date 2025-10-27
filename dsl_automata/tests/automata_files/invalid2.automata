@@ -1,0 +1,7 @@
+states: q0, q1
+alphabet: a, b
+initial: q2
+final: q1
+transitions:
+  (q0, a) -> q1
+  (q1, b) -> q0
