@@ -1,5 +1,5 @@
 from dsl_automata.logic.automata import Automata
-
+from dsl_automata.logic.dfa import DFA
 class AutomataParser:
     def parse(self, file_path: str) -> Automata:
         #Vamos a armar un array de lineas con una lista por comprensión
@@ -36,5 +36,8 @@ class AutomataParser:
                 left, right = [s.strip() for s in line.split('->')]
                 left = left.strip('()')
                 state, symbol = [s.strip() for s in left.split(',')]
-                automata['transitions'][(state, symbol)] = right
-        return Automata(automata['states'], automata['alphabet'], automata['initial'], automata['final'], automata['transitions'])
+                key = (state, symbol)
+                if key not in automata['transitions']:
+                    automata['transitions'][key] = set()
+                automata['transitions'][key].add(right)
+        return DFA(automata['states'], automata['alphabet'], automata['initial'], automata['final'], automata['transitions'])
