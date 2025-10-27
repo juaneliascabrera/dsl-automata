@@ -1,7 +1,7 @@
-from .exceptions import AutomataError
+from .exceptions import AutomatonError
 from .errors import *
 from abc import ABC, abstractmethod
-class Automata(ABC):
+class Automaton(ABC):
     """Abstract class for automata, next time I'll add DFA and NFA"""
     def __init__(self, states, alphabet, initial, finals, transitions):
         self.valid_automata(states, alphabet, initial, finals, transitions)
@@ -11,7 +11,7 @@ class Automata(ABC):
         self._finals = finals
         self._transitions = transitions
     def _raise(self, message):
-        raise AutomataError(message)
+        raise AutomatonError(message)
     def valid_automata(self, states, alphabet, initial, final, transitions):
         """Check if automata is valid."""
         #First, we're going to check if all final and the initial state are in the states set.

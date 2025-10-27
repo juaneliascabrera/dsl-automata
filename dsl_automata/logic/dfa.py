@@ -1,6 +1,6 @@
-from .automata import Automata
+from .automaton import Automaton
 from .errors import *
-class DFA(Automata):
+class DFA(Automaton):
     def __init__(self, states, alphabet, initial, final, transitions):
         super().__init__(states, alphabet, initial, final, transitions)
         self.is_deterministic()

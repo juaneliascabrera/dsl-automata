@@ -1,6 +1,6 @@
 from dsl_automata.parser.parser import AutomataParser
 from dsl_automata.logic.dfa import DFA
-from dsl_automata.logic.exceptions import AutomataError
+from dsl_automata.logic.exceptions import AutomatonError
 from dsl_automata.logic.errors import *
 import os
 import pytest
@@ -54,7 +54,7 @@ def test_nondeterminism():
     automata_file = os.path.join(current_dir, "automata_dfa_files/nondeterministic.automata")
     parser = AutomataParser()
 
-    with pytest.raises(AutomataError) as excinfo:
+    with pytest.raises(AutomatonError) as excinfo:
         dfa = parser.parse(automata_file)
     assert str(excinfo.value) == ERROR_AUTOMATA_IS_NOT_DETERMINISTIC.format(state="q0", symbol = "a", destinations = "{'q0', 'q1'}")
 

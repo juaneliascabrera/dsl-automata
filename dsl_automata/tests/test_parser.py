@@ -1,6 +1,6 @@
 from dsl_automata.parser.parser import AutomataParser
 from dsl_automata.logic.errors import *
-from dsl_automata.logic.exceptions import AutomataError
+from dsl_automata.logic.exceptions import AutomatonError
 import os
 import pytest
 def test_parser_basico():
@@ -61,7 +61,7 @@ def test_parser_invalid_automata():
     automata_file = os.path.join(current_dir, "automata_parser_files/invalid2.automata")
     parser = AutomataParser()
     #This example has an initial q2 that is not in the states set.
-    with pytest.raises(AutomataError) as excinfo:
+    with pytest.raises(AutomatonError) as excinfo:
         parser.parse(automata_file)
     assert str(excinfo.value) == ERROR_INITIAL_NOT_IN_STATES.format(state="q2")
 def test_parser_invalid_automata2():
