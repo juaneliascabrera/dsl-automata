@@ -10,6 +10,10 @@ class Automaton(ABC):
         self._initial = initial
         self._finals = finals
         self._transitions = transitions
+
+    @abstractmethod
+    def is_deterministic(self) -> bool:
+        pass
     def _raise(self, message):
         raise AutomatonError(message)
     def valid_automata(self, states, alphabet, initial, final, transitions):
