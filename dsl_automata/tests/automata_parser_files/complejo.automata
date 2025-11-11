@@ -1,3 +1,4 @@
+type: dfa
 states: q0, q1, q2, q3, q4, q5, q6
 alphabet: a, b, c, d, 0, 1
 initial: q0

@@ -1,6 +1,6 @@
+type: dfa
 states: ,q1
 alphabet: a
 start: q0
 final:
-
 transitions:

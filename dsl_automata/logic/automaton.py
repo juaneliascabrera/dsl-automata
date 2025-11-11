@@ -12,7 +12,7 @@ class Automaton(ABC):
         self._transitions = transitions
 
     @abstractmethod
-    def is_deterministic(self) -> bool:
+    def check_determinism(self):
         pass
     def _raise(self, message):
         raise AutomatonError(message)

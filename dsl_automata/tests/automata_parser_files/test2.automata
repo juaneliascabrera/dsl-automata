@@ -1,3 +1,4 @@
+type: dfa
 states: q0, q0
 alphabet: a
 initial: q0
